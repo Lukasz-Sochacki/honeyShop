@@ -1,6 +1,7 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { Order } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { CreateOrderDTO } from './dtos/create-order.dto';
 
 @Injectable()
 export class OrdersService {
@@ -12,7 +13,7 @@ export class OrdersService {
     });
   }
 
-  public async create(orderData: any): Promise<Order> {
+  public async create(orderData: CreateOrderDTO): Promise<Order> {
     const { products, ...addressData } = orderData;
 
     try {
@@ -31,6 +32,23 @@ export class OrdersService {
     } catch (error: any) {
       throw new InternalServerErrorException(
         'An error has occurred while placing your order',
+      );
+    }
+  }
+
+  public async getById(id: string): Promise<Order | null> {
+    try {
+      return await this.prismaService.order.findUnique({
+        where: { id },
+        include: {
+          products: {
+            include: { product: true },
+          },
+        },
+      });
+    } catch (error: any) {
+      throw new InternalServerErrorException(
+        'Error while retrieving order from database',
       );
     }
   }
