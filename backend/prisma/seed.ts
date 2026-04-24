@@ -5,30 +5,29 @@ function getProducts() {
   return [
     {
       id: 'p1-honey-lipowy',
-      name: 'Miód Lipowy',
+      name: 'Linden honey',
       price: 4500,
-      shortDescription: 'Jasny miód o silnym aromacie kwiatów lipy.',
+      shortDescription: 'Light honey with a strong aroma of linden flowers.',
       description:
-        'Nasz miód lipowy pochodzi z ekologicznych pasiek. Ma działanie napotne i przeciwgorączkowe.',
-      mainImage: 'https://unsplash.com',
+        'Our linden honey comes from organic apiaries. It has diaphoretic and antipyretic properties',
+      mainImage: '/images/Linden-honey.jpg',
     },
     {
       id: 'p2-honey-gryczany',
-      name: 'Miód Gryczany',
+      name: 'Buckwheat honey',
       price: 5200,
-      shortDescription: 'Ciemny miód o wyrazistym, korzennym smaku.',
+      shortDescription: 'Dark honey with a distinct, spicy flavor.',
       description:
-        'Idealny do wypieków, szczególnie do piernika. Charakteryzuje się wysoką zawartością rutyny.',
-      mainImage: 'https://unsplash.com',
+        'Perfect for baking, especially gingerbread. It has a high rutin content.',
+      mainImage: '/images/Buckwheat-honey.jpg',
     },
     {
       id: 'p3-drink-dwojniak',
-      name: 'Miód Pitny Dwójniak',
+      name: 'Mead',
       price: 8900,
-      shortDescription: 'Szlachetny trunek dojrzewający 2 lata.',
-      description:
-        'Tradycyjny polski miód pitny. Proporcja wody do miodu wynosi 1:1.',
-      mainImage: 'https://unsplash.com',
+      shortDescription: 'A noble drink matured for 2 years.',
+      description: 'Traditional Polish mead. The water-to-honey ratio is 1:1.',
+      mainImage: '/images/Mead.jpg',
     },
   ];
 }
@@ -37,13 +36,23 @@ function getAdditionalImages() {
   return [
     {
       id: 'img1',
-      url: 'https://unsplash.com',
+      url: '/images/Linden-honey-detal1.jpg',
       productId: 'p1-honey-lipowy',
     },
     {
       id: 'img2',
-      url: 'https://unsplash.com',
+      url: '/images/Linden-honey-detal2.jpg',
       productId: 'p1-honey-lipowy',
+    },
+    {
+      id: 'img3',
+      url: '/images/Buckwheat-honey-detal1.jpg',
+      productId: 'p2-honey-gryczany',
+    },
+    {
+      id: 'img4',
+      url: '/images/Mead-detal1.jpg',
+      productId: 'p3-drink-dwojniak',
     },
   ];
 }
@@ -71,7 +80,7 @@ async function seed() {
       });
     }),
   );
-  console.log('Seed zakończony pomyślnie');
+  console.log('Seed zakończony pomyślnie z lokalnymi ścieżkami do zdjęć');
 }
 
 seed();

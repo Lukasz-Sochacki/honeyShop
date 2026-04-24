@@ -1,0 +1,56 @@
+.hero {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 500px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-radius: 15px;
+  margin-bottom: 3rem;
+  transition: all 0.3s ease;
+  position: relative;
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+
+  // Efekt ciemnego gradientu nałożony na tło
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.4); // Przyciemnienie
+    border-radius: 15px;
+    z-index: 1;
+  }
+
+  // Ustawienie tekstu nad przyciemnieniem
+  h1,
+  p {
+    text-align: center;
+    position: relative;
+    z-index: 2;
+  }
+}
+
+.productCard {
+  border: none;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+
+  &:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
+  }
+
+  img {
+    transition: transform 0.5s ease;
+  }
+
+  &:hover img {
+    transform: scale(1.05);
+  }
+}
