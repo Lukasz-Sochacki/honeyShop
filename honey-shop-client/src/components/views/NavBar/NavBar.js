@@ -1,5 +1,41 @@
+import { Navbar, Nav, Container } from 'react-bootstrap';
+import { NavLink } from 'react-router-dom';
+import { FaShoppingBasket } from 'react-icons/fa';
+
 const NavBar = () => {
-  return <></>;
+  return (
+    <Navbar bg='white' expand='lg' className='py-4 border-bottom mb-4'>
+      <Container>
+        <Navbar.Brand
+          as={NavLink}
+          to='/'
+          className='fw-bold fs-3 text-uppercase'
+        >
+          Honey <span className='text-warning'>Shop</span>
+        </Navbar.Brand>
+        <Navbar.Toggle aria-controls='basic-navbar-nav' />
+        <Navbar.Collapse id='basic-navbar-nav'>
+          <Nav className='ms-auto align-items-center'>
+            <Nav.Link
+              as={NavLink}
+              to='/'
+              className='text-uppercase fw-semibold mx-2'
+            >
+              Shop
+            </Nav.Link>
+            <Nav.Link
+              as={NavLink}
+              to='/cart'
+              className='mx-2 position-relative'
+            >
+              <FaShoppingBasket size={24} />
+              {/* Tutaj w przyszłości dodamy licznik produktów w koszyku */}
+            </Nav.Link>
+          </Nav>
+        </Navbar.Collapse>
+      </Container>
+    </Navbar>
+  );
 };
 
 export default NavBar;
