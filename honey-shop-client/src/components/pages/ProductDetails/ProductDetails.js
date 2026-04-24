@@ -1,8 +1,133 @@
+import { useParams, Navigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { getProductById } from '../../../redux/productsRedux';
+import { Row, Col, Button, Form, Container } from 'react-bootstrap';
+import { useState } from 'react';
+
 const ProductDetails = () => {
+  const { id } = useParams();
+  const product = useSelector((state) => getProductById(state, id));
+  const [quantity, setQuantity] = useState(1);
+  const [activeImage, setActiveImage] = useState(product.mainImage);
+
+  if (!product) return <Navigate to='/' />;
+
   return (
-    <div>
-      <h1>ProductDetails</h1>
-    </div>
+    <Container className='my-5'>
+      <Row className='align-items-start'>
+        {' '}
+        {/* align-items-start zapobiega rozciąganiu kolumn */}
+        {/* Lewa kolumna: Zdjęcia */}
+        <Col md={6}>
+          {/* Zdjęcie główne - teraz całe będzie widoczne */}
+          <div
+            className='mb-3 rounded shadow-sm d-flex align-items-center justify-content-center bg-light'
+            style={{ height: '450px', overflow: 'hidden' }}
+          >
+            <img
+              src={process.env.PUBLIC_URL + activeImage}
+              alt={product.name}
+              className='img-fluid mb-3'
+              style={{
+                maxHeight: '100%',
+                maxWidth: '100%',
+                objectFit: 'contain', // To sprawi, że całe zdjęcie zmieści się w ramce
+              }}
+            />
+          </div>
+
+          {/* Galeria dodatkowych zdjęć */}
+          <Row className='g-2'>
+            {/* Opcjonalnie: warto dodać miniaturkę zdjęcia głównego na początek, 
+      żeby klient mógł do niego wrócić po kliknięciu w detale */}
+            <Col xs={3}>
+              <div
+                className='rounded shadow-sm d-flex align-items-center justify-content-center bg-light'
+                style={{
+                  height: '100px',
+                  overflow: 'hidden',
+                  border: '1px solid #eee',
+                  cursor: 'pointer',
+                }}
+                onClick={() => setActiveImage(product.mainImage)} // Tutaj wracamy do głównego
+              >
+                <img
+                  src={process.env.PUBLIC_URL + product.mainImage}
+                  className='img-fluid mt-3'
+                  style={{ objectFit: 'contain', height: '100%' }}
+                  alt='main'
+                />
+              </div>
+            </Col>
+            {product.images &&
+              product.images.map((img) => (
+                <Col xs={3} key={img.id}>
+                  <div
+                    className='rounded shadow-sm d-flex align-items-center justify-content-center bg-light'
+                    style={{
+                      height: '100px',
+                      overflow: 'hidden',
+                      border: '1px solid #eee',
+                      cursor: 'pointer',
+                    }}
+                    onClick={() => setActiveImage(img.url)}
+                  >
+                    <img
+                      src={process.env.PUBLIC_URL + img.url}
+                      alt='detail'
+                      className='img-fluid'
+                      style={{
+                        maxHeight: '100%',
+                        maxWidth: '100%',
+                        objectFit: 'contain',
+                        cursor: 'pointer',
+                      }}
+                    />
+                  </div>
+                </Col>
+              ))}
+          </Row>
+        </Col>
+        {/* Prawa kolumna: Tekst i Formularz */}
+        <Col md={6} className='ps-md-5'>
+          <div className='sticky-top' style={{ top: '20px' }}>
+            {' '}
+            {/* Tekst będzie "jechał" za zdjęciami przy przewijaniu */}
+            <h1 className='display-5 fw-bold text-uppercase mb-3'>
+              {product.name}
+            </h1>
+            <p className='fs-3 fw-bold text-warning mb-4'>
+              {product.price / 100} PLN
+            </p>
+            <hr />
+            <p className='text-muted mb-5' style={{ lineHeight: '1.8' }}>
+              {product.description}
+            </p>
+            <Form className='d-flex align-items-end gap-3'>
+              <Form.Group style={{ width: '100px' }}>
+                <Form.Label className='small fw-bold text-uppercase'>
+                  Ilość
+                </Form.Label>
+                <Form.Control
+                  type='number'
+                  min='1'
+                  value={quantity}
+                  onChange={(e) => setQuantity(parseInt(e.target.value))}
+                  className='rounded-0 border-dark py-2'
+                />
+              </Form.Group>
+
+              <Button
+                variant='primary'
+                className='flex-grow-1 py-2 text-uppercase fw-bold rounded-0 shadow-sm'
+              >
+                Dodaj do koszyka
+              </Button>
+            </Form>
+          </div>
+        </Col>
+      </Row>
+    </Container>
   );
 };
 
