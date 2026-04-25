@@ -1,23 +1,36 @@
 import { useParams, Navigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { getProductById } from '../../../redux/productsRedux';
 import { Row, Col, Button, Form, Container } from 'react-bootstrap';
 import { useState } from 'react';
+import { addToCart } from '../../../redux/cartRedux';
 
 const ProductDetails = () => {
   const { id } = useParams();
+  const dispatch = useDispatch();
   const product = useSelector((state) => getProductById(state, id));
   const [quantity, setQuantity] = useState(1);
   const [activeImage, setActiveImage] = useState(product.mainImage);
+
+  const handleAddToCart = (event) => {
+    event.preventDefault();
+    dispatch(
+      addToCart({
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        quantity: quantity,
+        comment: '',
+      }),
+    );
+    alert('Product added to cart!');
+  };
 
   if (!product) return <Navigate to='/' />;
 
   return (
     <Container className='my-5'>
       <Row className='align-items-start'>
-        {' '}
-        {/* align-items-start zapobiega rozciąganiu kolumn */}
-        {/* Lewa kolumna: Zdjęcia */}
         <Col md={6}>
           {/* Zdjęcie główne - teraz całe będzie widoczne */}
           <div
@@ -31,7 +44,7 @@ const ProductDetails = () => {
               style={{
                 maxHeight: '100%',
                 maxWidth: '100%',
-                objectFit: 'contain', // To sprawi, że całe zdjęcie zmieści się w ramce
+                objectFit: 'contain',
               }}
             />
           </div>
@@ -91,8 +104,6 @@ const ProductDetails = () => {
         {/* Prawa kolumna: Tekst i Formularz */}
         <Col md={6} className='ps-md-5'>
           <div className='sticky-top' style={{ top: '20px' }}>
-            {' '}
-            {/* Tekst będzie "jechał" za zdjęciami przy przewijaniu */}
             <h1 className='display-5 fw-bold text-uppercase mb-3'>
               {product.name}
             </h1>
@@ -120,8 +131,9 @@ const ProductDetails = () => {
               <Button
                 variant='primary'
                 className='flex-grow-1 py-2 text-uppercase fw-bold rounded-0 shadow-sm'
+                onClick={handleAddToCart}
               >
-                Dodaj do koszyka
+                Add to cart
               </Button>
             </Form>
           </div>
