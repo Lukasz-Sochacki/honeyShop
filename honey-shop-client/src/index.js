@@ -11,7 +11,7 @@ root.render(
   <React.StrictMode>
     <BrowserRouter>
       <Provider store={store}>
-        <App />
+        <App classname='d-flex flex-column min-vh-100' />
       </Provider>
     </BrowserRouter>
   </React.StrictMode>,

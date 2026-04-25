@@ -1,11 +1,17 @@
 import { useSelector } from 'react-redux';
 import { getAllProducts } from '../../../redux/productsRedux';
-import { Row, Col, Card, Button, Container } from 'react-bootstrap';
+import { Row, Col, Card, Button, Container, Form } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import styles from '../Home/Home.module.scss';
+import { useState } from 'react';
 
 const Home = () => {
   const products = useSelector(getAllProducts);
+  const [searchPhrase, setSearchPhrase] = useState('');
+
+  const filteredProducts = products.filter((product) =>
+    product.name.toLowerCase().includes(searchPhrase.toLowerCase()),
+  );
 
   return (
     <Container>
@@ -19,8 +25,25 @@ const Home = () => {
         <p className='lead fw-bold'>True nature locked in a jar</p>
       </div>
 
+      <Row className='justify-content-center mb-5'>
+        <Col md={6}>
+          <Form.Control
+            type='text'
+            placeholder='Search favorite honey...'
+            className='rounded-0 border-dark py-2 shadow-sm'
+            value={searchPhrase}
+            onChange={(event) => setSearchPhrase(event.target.value)}
+          />
+          {searchPhrase && (
+            <p className='text-muted small mt-2'>
+              Products found: {filteredProducts.length}
+            </p>
+          )}
+        </Col>
+      </Row>
+
       <Row xs={1} md={2} lg={3} className='g-4 mb-5'>
-        {products.map((product) => (
+        {filteredProducts.map((product) => (
           <Col key={product.id}>
             <Card className={`${styles.productCard} h-100 shadow-sm`}>
               <div style={{ overflow: 'hidden' }}>
@@ -53,6 +76,14 @@ const Home = () => {
           </Col>
         ))}
       </Row>
+
+      {filteredProducts.length === 0 && (
+        <div className='text-center my-5'>
+          <h3 className='text-muted'>
+            Unfortunately, we don't have honey with that name...
+          </h3>
+        </div>
+      )}
     </Container>
   );
 };
