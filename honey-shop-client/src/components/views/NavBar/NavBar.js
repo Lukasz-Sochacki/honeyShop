@@ -1,8 +1,13 @@
-import { Navbar, Nav, Container } from 'react-bootstrap';
+import { Navbar, Nav, Container, Badge } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
 import { FaShoppingBasket } from 'react-icons/fa';
-
+import { useSelector } from 'react-redux';
+import { getCart } from '../../../redux/cartRedux';
 const NavBar = () => {
+  const cartItems = useSelector(getCart);
+
+  const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+
   return (
     <Navbar bg='white' expand='lg' className='py-4 border-bottom mb-4'>
       <Container>
@@ -29,6 +34,16 @@ const NavBar = () => {
               className='mx-2 position-relative'
             >
               <FaShoppingBasket size={24} />
+              {totalItems > 0 && (
+                <Badge
+                  pill
+                  bg='warning'
+                  text='dark'
+                  className='position-absolute top-0 start-100 translate-middle'
+                >
+                  {totalItems}
+                </Badge>
+              )}
               {/* Tutaj w przyszłości dodamy licznik produktów w koszyku */}
             </Nav.Link>
           </Nav>
