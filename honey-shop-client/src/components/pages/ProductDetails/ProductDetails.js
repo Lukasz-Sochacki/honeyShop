@@ -117,7 +117,7 @@ const ProductDetails = () => {
             <Form className='d-flex align-items-end gap-3'>
               <Form.Group style={{ width: '100px' }}>
                 <Form.Label className='small fw-bold text-uppercase'>
-                  Ilość
+                  Quantity
                 </Form.Label>
                 <Form.Control
                   type='number'
