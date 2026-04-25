@@ -23,6 +23,7 @@ const Order = () => {
   const [address, setAddress] = useState('');
   const [email, setEmail] = useState('');
   const [showModal, setShowModal] = useState(false);
+  const [validated, setValidated] = useState(false);
 
   if (cartItems.length === 0 && !showModal) return <Navigate to='/' />;
 
@@ -32,7 +33,13 @@ const Order = () => {
   );
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    const form = e.currentTarget;
+    if (form.checkValidity() === false) {
+      e.preventDefault();
+      e.stopPropagation();
+      setValidated(true);
+      return;
+    }
 
     const orderData = {
       clientName: name,
@@ -111,7 +118,7 @@ const Order = () => {
         {/* Kolumna Prawa: Formularz */}
         <Col lg={6} className='bg-light p-4 p-md-5 rounded shadow-sm'>
           <h4 className='fw-bold mb-4 text-uppercase'>Shipping details</h4>
-          <Form onSubmit={handleSubmit}>
+          <Form noValidate validated={validated} onSubmit={handleSubmit}>
             <Form.Group className='mb-3'>
               <Form.Label className='small fw-bold text-uppercase'>
                 Name and surname
@@ -153,6 +160,9 @@ const Order = () => {
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
               />
+              <Form.Control.Feedback type='invalid'>
+                Please provide correct details.
+              </Form.Control.Feedback>
             </Form.Group>
 
             <Button
