@@ -26,18 +26,20 @@ export const sendOrderRequest = (orderData) => {
   return (dispatch) => {
     const options = {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(orderData),
     };
-    return fetch(`${API_URL}/orders`, options).then((res) => {
-      if (res.ok) {
-        alert('Order placed successfully!');
-      } else {
-        alert('An error occurred while placing your order.');
-      }
-    });
+
+    return fetch(`${API_URL}/orders`, options)
+      .then((res) => {
+        if (res.ok) {
+          return true;
+        } else {
+          console.error('Order failed');
+          return false;
+        }
+      })
+      .catch(() => false);
   };
 };
 

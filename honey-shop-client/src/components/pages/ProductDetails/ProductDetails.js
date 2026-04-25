@@ -1,9 +1,10 @@
 import { useParams, Navigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { getProductById } from '../../../redux/productsRedux';
-import { Row, Col, Button, Form, Container } from 'react-bootstrap';
+import { Row, Col, Button, Form, Container, Modal } from 'react-bootstrap';
 import { useState } from 'react';
 import { addToCart } from '../../../redux/cartRedux';
+import { Link } from 'react-router-dom';
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -11,6 +12,8 @@ const ProductDetails = () => {
   const product = useSelector((state) => getProductById(state, id));
   const [quantity, setQuantity] = useState(1);
   const [activeImage, setActiveImage] = useState(product.mainImage);
+
+  const [showModal, setShowModal] = useState(false);
 
   const handleAddToCart = (event) => {
     event.preventDefault();
@@ -23,13 +26,37 @@ const ProductDetails = () => {
         comment: '',
       }),
     );
-    alert('Product added to cart!');
+    setShowModal(true);
   };
 
   if (!product) return <Navigate to='/' />;
 
   return (
     <Container className='my-5'>
+      <Modal show={showModal} onHide={() => setShowModal(false)} centered>
+        <Modal.Header closeButton className='border-0'>
+          <Modal.Title className='fw-bold text-uppercase'>Cart</Modal.Title>
+        </Modal.Header>
+        <Modal.Body className='text-center py-4'>
+          Product <strong>{product.name}</strong> (quantity: {quantity}) has
+          been added to cart!
+        </Modal.Body>
+        <Modal.Footer className='border-0 justify-content-center'>
+          <Button
+            variant='outline-dark'
+            className='rounded-0 fw-bold'
+            onClick={() => setShowModal(false)}
+          >
+            Continue shopping
+          </Button>
+          <Link to='/cart'>
+            <Button variant='dark' className='rounded-0 fw-bold'>
+              Go to the cart
+            </Button>
+          </Link>
+        </Modal.Footer>
+      </Modal>
+
       <Row className='align-items-start'>
         <Col md={6}>
           {/* Zdjęcie główne - teraz całe będzie widoczne */}

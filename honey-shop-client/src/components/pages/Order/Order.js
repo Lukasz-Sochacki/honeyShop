@@ -1,6 +1,14 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { getCart, sendOrderRequest, clearCart } from '../../../redux/cartRedux';
-import { Container, Row, Col, Form, Button, ListGroup } from 'react-bootstrap';
+import {
+  Container,
+  Row,
+  Col,
+  Form,
+  Button,
+  ListGroup,
+  Modal,
+} from 'react-bootstrap';
 import { useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
@@ -14,8 +22,9 @@ const Order = () => {
   const [name, setName] = useState('');
   const [address, setAddress] = useState('');
   const [email, setEmail] = useState('');
+  const [showModal, setShowModal] = useState(false);
 
-  if (cartItems.length === 0) return <Navigate to='/' />;
+  if (cartItems.length === 0 && !showModal) return <Navigate to='/' />;
 
   const totalPrice = cartItems.reduce(
     (sum, item) => sum + item.price * item.quantity,
@@ -37,13 +46,33 @@ const Order = () => {
       })),
     };
 
-    await dispatch(sendOrderRequest(orderData));
-    dispatch(clearCart());
-    navigate('/');
+    const success = await dispatch(sendOrderRequest(orderData));
+    if (success) {
+      setShowModal(true);
+      dispatch(clearCart());
+    }
   };
 
   return (
     <Container className='my-5'>
+      <Modal show={showModal} onHide={() => navigate('/')} centered>
+        <Modal.Header closeButton className='border-0'>
+          <Modal.Title className='fw-bold text-uppercase'>Success!</Modal.Title>
+        </Modal.Header>
+        <Modal.Body className='text-center py-4'>
+          Your order has been placed. Thank you for purchasing honey!
+        </Modal.Body>
+        <Modal.Footer className='border-0 justify-content-center'>
+          <Button
+            variant='dark'
+            className='rounded-0 fw-bold px-4'
+            onClick={() => navigate('/')}
+          >
+            OK
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
       <h1 className='display-5 fw-bold text-uppercase mb-5 text-center'>
         Order summary
       </h1>
