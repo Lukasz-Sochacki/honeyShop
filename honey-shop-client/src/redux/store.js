@@ -22,4 +22,10 @@ const store = createStore(
   ),
 );
 
+store.subscribe(() => {
+  const state = store.getState();
+  // Zapisujemy całą tablicę cart jako string JSON
+  localStorage.setItem('cart', JSON.stringify(state.cart));
+});
+
 export default store;

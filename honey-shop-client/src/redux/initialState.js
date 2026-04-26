@@ -1,6 +1,10 @@
 const initialState = {
   products: [],
-  cart: [], // Tutaj będziemy trzymać obiekty { id, name, price, quantity, comment }
+  // Sprawdzamy czy w localStorage jest 'cart', jeśli tak - parsujemy go, jeśli nie - dajemy []
+
+  cart: localStorage.getItem('cart')
+    ? JSON.parse(localStorage.getItem('cart'))
+    : [],
 };
 
 export default initialState;
