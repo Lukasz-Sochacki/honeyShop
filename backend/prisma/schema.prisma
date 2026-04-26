@@ -20,6 +20,15 @@ model Product {
   shortDescription String //na stronę główną
   images Image[] //dodatkowe zdjęcia
   orderProducts OrderProduct []
+  variants ProductVariant []
+}
+
+model ProductVariant {
+  id String @id @default(uuid())
+  name String //100ml, 500ml
+  price Int //cena dla konkretnego wariantu
+  product Product @relation(fields: [productId], references: [id])
+  productId String
 }
 
 model Image {

@@ -33,9 +33,10 @@ const Order = () => {
   );
 
   const handleSubmit = async (e) => {
+    e.preventDefault();
+
     const form = e.currentTarget;
     if (form.checkValidity() === false) {
-      e.preventDefault();
       e.stopPropagation();
       setValidated(true);
       return;

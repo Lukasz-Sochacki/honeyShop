@@ -8,7 +8,7 @@ export class ProductsService {
 
   public getAll(): Promise<Product[]> {
     return this.prismaService.product.findMany({
-      include: { images: true },
+      include: { images: true, variants: true },
     });
   }
 
@@ -17,6 +17,7 @@ export class ProductsService {
       where: { id },
       include: {
         images: true,
+        variants: true,
       },
     });
   }

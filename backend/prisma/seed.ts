@@ -57,7 +57,24 @@ function getAdditionalImages() {
   ];
 }
 
+function getVariants() {
+  return [
+    // Linden honey
+    { id: 'v1', name: '250g', price: 2500, productId: 'p1-honey-lipowy' },
+    { id: 'v2', name: '500g', price: 4500, productId: 'p1-honey-lipowy' },
+    { id: 'v3', name: '1kg', price: 8000, productId: 'p1-honey-lipowy' },
+    // Buckwheat honey
+    { id: 'v4', name: '500g', price: 5200, productId: 'p2-honey-gryczany' },
+    { id: 'v5', name: '1kg', price: 9500, productId: 'p2-honey-gryczany' },
+    // Mead
+    { id: 'v6', name: '250ml', price: 3900, productId: 'p3-drink-dwojniak' },
+    { id: 'v7', name: '500ml', price: 6500, productId: 'p3-drink-dwojniak' },
+    { id: 'v8', name: '750ml', price: 8900, productId: 'p3-drink-dwojniak' },
+  ];
+}
+
 async function seed() {
+  await db.productVariant.deleteMany();
   await db.image.deleteMany();
   await db.orderProduct.deleteMany();
   await db.product.deleteMany();
@@ -73,6 +90,19 @@ async function seed() {
       return db.image.create({
         data: {
           ...imageData,
+          product: {
+            connect: { id: productId },
+          },
+        },
+      });
+    }),
+  );
+
+  await Promise.all(
+    getVariants().map(({ productId, ...variantData }) => {
+      return db.productVariant.create({
+        data: {
+          ...variantData,
           product: {
             connect: { id: productId },
           },
