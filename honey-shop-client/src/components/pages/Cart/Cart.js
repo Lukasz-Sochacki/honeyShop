@@ -13,14 +13,14 @@ const Cart = () => {
   const dispatch = useDispatch();
   const cartItems = useSelector(getCart);
 
-  const handleQuantityChange = (id, quantity) => {
-    dispatch(updateQuantity({ id, quantity: parseInt(quantity) }));
+  const handleQuantityChange = (id, variantName, quantity) => {
+    dispatch(updateQuantity({ id, variantName, quantity: parseInt(quantity) }));
   };
   const handleCommentChange = (id, comment) => {
     dispatch(updateComment({ id, comment }));
   };
-  const handleRemove = (id) => {
-    dispatch(removeFromCart(id));
+  const handleRemove = (id, variantName) => {
+    dispatch(removeFromCart({ id, variantName }));
   };
 
   // Obliczanie sumy całkowitej
@@ -53,11 +53,19 @@ const Cart = () => {
       <Row>
         <Col lg={8}>
           {cartItems.map((item) => (
-            <Card key={item.id} className='mb-3 border-0 shadow-sm rounded-0'>
+            <Card
+              key={item.id - item.variantName}
+              className='mb-3 border-0 shadow-sm rounded-0'
+            >
               <Card.Body>
                 <Row className='align-items-center text-center text-md-start'>
                   <Col md={4}>
-                    <h5 className='fw-bold text-uppercase mb-1'>{item.name}</h5>
+                    <h5 className='fw-bold text-uppercase mb-1'>
+                      {item.name}{' '}
+                      <small className='text-muted text-capitalize'>
+                        ({item.variantName})
+                      </small>
+                    </h5>
                     <p className='text-warning fw-bold mb-0'>
                       {item.price / 100} PLN
                     </p>
@@ -69,7 +77,11 @@ const Cart = () => {
                       min='1'
                       value={item.quantity}
                       onChange={(event) =>
-                        handleQuantityChange(item.id, event.target.value)
+                        handleQuantityChange(
+                          item.id,
+                          item.variantName,
+                          event.target.value,
+                        )
                       }
                       className='rounded-0 border-dark'
                     />
@@ -90,7 +102,7 @@ const Cart = () => {
                     <Button
                       variant='link'
                       className='text-danger p-0'
-                      onClick={() => handleRemove(item.id)}
+                      onClick={() => handleRemove(item.id, item.variantName)}
                     >
                       <FaTrash size={18} />
                     </Button>

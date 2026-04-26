@@ -2,7 +2,7 @@ import { useParams, Navigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { getProductById } from '../../../redux/productsRedux';
 import { Row, Col, Button, Form, Container, Modal } from 'react-bootstrap';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { addToCart } from '../../../redux/cartRedux';
 import { Link } from 'react-router-dom';
 
@@ -10,10 +10,20 @@ const ProductDetails = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const product = useSelector((state) => getProductById(state, id));
+
   const [quantity, setQuantity] = useState(1);
   const [activeImage, setActiveImage] = useState(product.mainImage);
-
   const [showModal, setShowModal] = useState(false);
+  const [selectedVariant, setSelectedVariant] = useState(null);
+
+  useEffect(() => {
+    if (product) {
+      setActiveImage(product.mainImage);
+      if (product.variants && product.variants.length > 0) {
+        setSelectedVariant(product.variants[0]);
+      }
+    }
+  }, [product]);
 
   const handleAddToCart = (event) => {
     event.preventDefault();
@@ -21,7 +31,9 @@ const ProductDetails = () => {
       addToCart({
         id: product.id,
         name: product.name,
-        price: product.price,
+        variantId: selectedVariant.id,
+        variantName: selectedVariant.name,
+        price: selectedVariant.price,
         quantity: quantity,
         comment: '',
       }),
@@ -135,14 +147,41 @@ const ProductDetails = () => {
               {product.name}
             </h1>
             <p className='fs-3 fw-bold text-warning mb-4'>
-              {product.price / 100} PLN
+              {selectedVariant
+                ? selectedVariant.price / 100
+                : product.price / 100}{' '}
+              PLN
             </p>
             <hr />
             <p className='text-muted mb-5' style={{ lineHeight: '1.8' }}>
               {product.description}
             </p>
-            <Form className='d-flex align-items-end gap-3'>
-              <Form.Group style={{ width: '100px' }}>
+
+            <Form onSubmit={handleAddToCart}>
+              {/* WYBÓR GRAMATURY */}
+              <Form.Group className='mb-4'>
+                <Form.Label className='small fw-bold text-uppercase'>
+                  Choose grammage
+                </Form.Label>
+                <Form.Select
+                  className='rounded-0 border-dark'
+                  value={selectedVariant?.id || ''}
+                  onChange={(e) => {
+                    const variant = product.variants.find(
+                      (v) => v.id === e.target.value,
+                    );
+                    setSelectedVariant(variant);
+                  }}
+                >
+                  {product.variants.map((v) => (
+                    <option key={v.id} value={v.id}>
+                      {v.name} - {v.price / 100} PLN
+                    </option>
+                  ))}
+                </Form.Select>
+              </Form.Group>
+
+              <Form.Group className='mb-3' style={{ width: '100px' }}>
                 <Form.Label className='small fw-bold text-uppercase'>
                   Quantity
                 </Form.Label>
@@ -156,11 +195,11 @@ const ProductDetails = () => {
               </Form.Group>
 
               <Button
+                type='submit'
                 variant='primary'
-                className='flex-grow-1 py-2 text-uppercase fw-bold rounded-0 shadow-sm'
-                onClick={handleAddToCart}
+                className='w-100 py-2 text-uppercase fw-bold rounded-0'
               >
-                Add to cart
+                Dodaj do koszyka
               </Button>
             </Form>
           </div>

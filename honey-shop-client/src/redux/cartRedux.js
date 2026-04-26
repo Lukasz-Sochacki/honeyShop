@@ -1,3 +1,4 @@
+import { act } from 'react';
 import { API_URL } from '../config';
 
 //selectors
@@ -46,27 +47,35 @@ export const sendOrderRequest = (orderData) => {
 const cartsReducer = (statePart = [], action) => {
   switch (action.type) {
     case ADD_TO_CART:
-      // Sprawdzamy, czy produkt o tym samym ID już jest w koszyku
-      const existingProduct = statePart.find(
-        (item) => item.id === action.payload.id,
+      // Sprawdzamy ID produktu ORAZ nazwę wariantu
+      const isExisting = statePart.find(
+        (item) =>
+          item.id === action.payload.id &&
+          item.variantName === action.payload.variantName,
       );
-      if (existingProduct) {
-        // Jeśli jest, mapujemy koszyk i zwiększamy ilość dla tego produktu
+      if (isExisting) {
         return statePart.map((item) =>
-          item.id === action.payload.id
+          item.id === action.payload.id &&
+          item.variantName === action.payload.variantName
             ? { ...item, quantity: item.quantity + action.payload.quantity }
             : item,
         );
       }
-      // Jeśli go nie ma, dodajemy nowy obiekt do tablicy
       return [...statePart, { ...action.payload }];
 
     case REMOVE_FROM_CART:
-      return statePart.filter((item) => item.id !== action.payload);
+      return statePart.filter(
+        (item) =>
+          !(
+            item.id === action.payload.id &&
+            item.variantName === action.payload.variantName
+          ),
+      );
 
     case UPDATE_QUANTITY:
       return statePart.map((item) =>
-        item.id === action.payload.id
+        item.id === action.payload.id &&
+        item.variantName === action.payload.variantName
           ? { ...item, quantity: action.payload.quantity }
           : item,
       );

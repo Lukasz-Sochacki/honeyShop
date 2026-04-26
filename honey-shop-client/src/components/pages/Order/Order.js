@@ -94,7 +94,7 @@ const Order = () => {
                 <div className='d-flex justify-content-between align-items-center'>
                   <div>
                     <h6 className='fw-bold mb-0'>
-                      {item.name} x {item.quantity}
+                      {item.name} ({item.variantName}) X {item.quantity}
                     </h6>
                     {item.comment && (
                       <small className='text-muted'>
