@@ -5,6 +5,7 @@ import { Row, Col, Button, Form, Container, Modal } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
 import { addToCart } from '../../../redux/cartRedux';
 import { Link } from 'react-router-dom';
+import styles from '../ProductDetails/ProductDetails.module.scss';
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -15,6 +16,7 @@ const ProductDetails = () => {
   const [activeImage, setActiveImage] = useState(product.mainImage);
   const [showModal, setShowModal] = useState(false);
   const [selectedVariant, setSelectedVariant] = useState(null);
+  const [showLightbox, setShowLightBox] = useState(false);
 
   useEffect(() => {
     if (product) {
@@ -45,6 +47,31 @@ const ProductDetails = () => {
 
   return (
     <Container className='my-5'>
+      {/* MODAL LIGHTBOX - Powiększone zdjęcie */}
+      <Modal
+        show={showLightbox}
+        onHide={() => setShowLightBox(false)}
+        size='lg'
+        centered
+        contentClassName='bg-transparent border-0'
+      >
+        <Modal.Body className='p-0 text-center'>
+          <img
+            src={process.env.PUBLIC_URL + activeImage}
+            alt='Full size'
+            className='img-fluid rounded shadow-lg'
+            style={{ maxHeight: '90vh' }}
+          />
+          <Button
+            variant='light'
+            className='position-absolute top-0 end-0 m-3 rounded-circle'
+            onClick={() => setShowLightBox(false)}
+          >
+            &times;
+          </Button>
+        </Modal.Body>
+      </Modal>
+
       <Modal show={showModal} onHide={() => setShowModal(false)} centered>
         <Modal.Header closeButton className='border-0'>
           <Modal.Title className='fw-bold text-uppercase'>Cart</Modal.Title>
@@ -74,12 +101,13 @@ const ProductDetails = () => {
           {/* Zdjęcie główne - teraz całe będzie widoczne */}
           <div
             className='mb-3 rounded shadow-sm d-flex align-items-center justify-content-center bg-light'
-            style={{ height: '450px', overflow: 'hidden' }}
+            style={{ height: '450px', overflow: 'hidden', cursor: 'zoom-in' }}
+            onClick={() => setShowLightBox(true)}
           >
             <img
               src={process.env.PUBLIC_URL + activeImage}
               alt={product.name}
-              className='img-fluid mb-3'
+              className={`img-fluid ${styles.transitionScale}`}
               style={{
                 maxHeight: '100%',
                 maxWidth: '100%',
@@ -94,7 +122,7 @@ const ProductDetails = () => {
       żeby klient mógł do niego wrócić po kliknięciu w detale */}
             <Col xs={3}>
               <div
-                className='rounded shadow-sm d-flex align-items-center justify-content-center bg-light'
+                className={`rounded shadow-sm d-flex align-items-center justify-content-center bg-light ${activeImage === product.mainImage ? 'border border-warning' : ''}`}
                 style={{
                   height: '100px',
                   overflow: 'hidden',
@@ -115,7 +143,7 @@ const ProductDetails = () => {
               product.images.map((img) => (
                 <Col xs={3} key={img.id}>
                   <div
-                    className='rounded shadow-sm d-flex align-items-center justify-content-center bg-light'
+                    className={`rounded shadow-sm d-flex align-items-center justify-content-center bg-light ${activeImage === img.url ? 'border border-warning' : ''}`}
                     style={{
                       height: '100px',
                       overflow: 'hidden',

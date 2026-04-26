@@ -6,7 +6,7 @@ function getProducts() {
     {
       id: 'p1-honey-lipowy',
       name: 'Linden honey',
-      price: 4500,
+      price: 2500,
       shortDescription: 'Light honey with a strong aroma of linden flowers.',
       description:
         'Our linden honey comes from organic apiaries. It has diaphoretic and antipyretic properties',
@@ -24,7 +24,7 @@ function getProducts() {
     {
       id: 'p3-drink-dwojniak',
       name: 'Mead',
-      price: 8900,
+      price: 3900,
       shortDescription: 'A noble drink matured for 2 years.',
       description: 'Traditional Polish mead. The water-to-honey ratio is 1:1.',
       mainImage: '/images/Mead.jpg',
