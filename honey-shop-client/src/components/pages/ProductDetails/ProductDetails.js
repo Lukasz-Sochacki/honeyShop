@@ -227,7 +227,7 @@ const ProductDetails = () => {
                 variant='primary'
                 className='w-100 py-2 text-uppercase fw-bold rounded-0'
               >
-                Dodaj do koszyka
+                Add to the cart
               </Button>
             </Form>
           </div>
