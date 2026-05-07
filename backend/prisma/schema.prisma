@@ -14,19 +14,19 @@ datasource db {
 model Product {
   id String @id @default(uuid())
   name String
-  price Int //Cena w groszach
-  mainImage String // URL do zdjęcia głównego
+  price Int 
+  mainImage String 
   description String @db.Text
-  shortDescription String //na stronę główną
-  images Image[] //dodatkowe zdjęcia
+  shortDescription String 
+  images Image[] 
   orderProducts OrderProduct []
   variants ProductVariant []
 }
 
 model ProductVariant {
   id String @id @default(uuid())
-  name String //100ml, 500ml
-  price Int //cena dla konkretnego wariantu
+  name String 
+  price Int 
   product Product @relation(fields: [productId], references: [id])
   productId String
 }
@@ -55,7 +55,6 @@ model OrderProduct {
   orderId String
   product Product @relation(fields: [productId], references: [id])
   productId String
-  quantity Int // Ilość sztuk
-  comment String? //Opis dla każdego z nich
-
+  quantity Int 
+  comment String? 
 }

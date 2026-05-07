@@ -47,7 +47,6 @@ const ProductDetails = () => {
 
   return (
     <Container className='my-5'>
-      {/* MODAL LIGHTBOX - Powiększone zdjęcie */}
       <Modal
         show={showLightbox}
         onHide={() => setShowLightBox(false)}
@@ -98,7 +97,6 @@ const ProductDetails = () => {
 
       <Row className='align-items-start'>
         <Col md={6}>
-          {/* Zdjęcie główne - teraz całe będzie widoczne */}
           <div
             className='mb-3 rounded shadow-sm d-flex align-items-center justify-content-center bg-light'
             style={{ height: '450px', overflow: 'hidden', cursor: 'zoom-in' }}
@@ -116,10 +114,7 @@ const ProductDetails = () => {
             />
           </div>
 
-          {/* Galeria dodatkowych zdjęć */}
           <Row className='g-2'>
-            {/* Opcjonalnie: warto dodać miniaturkę zdjęcia głównego na początek, 
-      żeby klient mógł do niego wrócić po kliknięciu w detale */}
             <Col xs={3}>
               <div
                 className={`rounded shadow-sm d-flex align-items-center justify-content-center bg-light ${activeImage === product.mainImage ? 'border border-warning' : ''}`}
@@ -129,7 +124,7 @@ const ProductDetails = () => {
                   border: '1px solid #eee',
                   cursor: 'pointer',
                 }}
-                onClick={() => setActiveImage(product.mainImage)} // Tutaj wracamy do głównego
+                onClick={() => setActiveImage(product.mainImage)}
               >
                 <img
                   src={process.env.PUBLIC_URL + product.mainImage}
@@ -168,7 +163,6 @@ const ProductDetails = () => {
               ))}
           </Row>
         </Col>
-        {/* Prawa kolumna: Tekst i Formularz */}
         <Col md={6} className='ps-md-5'>
           <div className='sticky-top' style={{ top: '20px' }}>
             <h1 className='display-5 fw-bold text-uppercase mb-3'>
@@ -186,7 +180,6 @@ const ProductDetails = () => {
             </p>
 
             <Form onSubmit={handleAddToCart}>
-              {/* WYBÓR GRAMATURY */}
               <Form.Group className='mb-4'>
                 <Form.Label className='small fw-bold text-uppercase'>
                   Choose grammage

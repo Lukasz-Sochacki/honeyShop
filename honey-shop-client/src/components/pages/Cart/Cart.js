@@ -23,7 +23,6 @@ const Cart = () => {
     dispatch(removeFromCart({ id, variantName }));
   };
 
-  // Obliczanie sumy całkowitej
   const totalPrice = cartItems.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0,
@@ -112,8 +111,6 @@ const Cart = () => {
             </Card>
           ))}
         </Col>
-
-        {/* Podsumowanie po prawej */}
 
         <Col lg={4}>
           <Card

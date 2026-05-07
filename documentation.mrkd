@@ -1,0 +1,54 @@
+# Honey Shop - Artisanal E-commerce Platform
+
+### 🍯 Project Purpose
+Honey Shop is a comprehensive full-stack e-commerce application designed for an artisanal honey retailer. The project provides a seamless shopping experience, from browsing a diverse catalog of natural honey products to a customized checkout process.
+
+**Key Features:**
+*   **Dynamic Product Catalog:** Real-time search functionality to filter products by name.
+*   **Product Variants:** Support for different weights (e.g., 250g, 500g, 1kg) and units (ml) with dynamic price updates.
+*   **Interactive Gallery:** High-quality product images with a custom Lightbox zoom feature.
+*   **Advanced Cart System:** Users can adjust quantities, remove items, and add personalized comments/notes to each product in the cart.
+*   **State Persistence:** Integrated `localStorage` ensures the shopping cart survives page refreshes.
+*   **Secure Checkout:** A multi-step order process with full form validation and backend integration.
+
+---
+
+### 🚀 Step-by-Step Installation Guide
+
+To run this project locally, follow these instructions:
+
+1.  **Clone the Repository:**
+    ```bash
+    git clone git@github.com:Lukasz-Sochacki/honeyShop.git
+    cd honey-shop
+    ```
+
+2.  **Backend Setup (NestJS):**
+    *   Navigate to the backend directory: `cd backend`
+    *   Install dependencies: `npm install`
+    *   Create a `.env` file and configure your database connection:
+        `DATABASE_URL="postgresql://kodilla_db_honeyshop_user:BnePnWMRSupQ5THDkXt312ee2nfbY8b4@dpg-d7o7vsv7f7vs73880l40-a.virginia-postgres.render.com/kodilla_db_honeyshop"
+    *   Run migrations and seed the database:
+        `npx prisma migrate dev`
+        `npx prisma db seed`
+    *   Start the server: `npm run start:dev`
+
+3.  **Frontend Setup (React):**
+    *   In a new terminal, navigate to the client directory: `cd honey-shop-client`
+    *   Install dependencies: `npm install`
+    *   Start the application: `yarn start`
+
+---
+
+### 🛠️ Technical Information & Stack
+
+The application is built using a modern Client-Server architecture:
+
+*   **Frontend:** React, Redux (Subreducers, Thunk middleware), React Router, Bootstrap, Sass.
+*   **Backend:** NestJS, Prisma ORM.
+*   **Database:** PostgreSQL (hosted on Render) for production, MySQL/PostgreSQL for local development.
+*   **Validation:** Class-validator & DTOs on the backend; HTML5 & Bootstrap validation on the frontend.
+
+**API & Authorization:**
+The project uses a REST API to manage products and orders. Access to the production PostgreSQL database on Render is secured via environment variables. No additional API keys are required for local development beyond a valid `DATABASE_URL`.
+

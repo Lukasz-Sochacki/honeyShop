@@ -85,7 +85,6 @@ const Order = () => {
         Order summary
       </h1>
       <Row className='g-5'>
-        {/* Kolumna Lewa: Twoje Produkty */}
         <Col lg={6}>
           <h4 className='fw-bold mb-4 text-uppercase'>Your honey</h4>
           <ListGroup variant='flush' className='border-bottom'>
@@ -116,7 +115,6 @@ const Order = () => {
             </span>
           </div>
         </Col>
-        {/* Kolumna Prawa: Formularz */}
         <Col lg={6} className='bg-light p-4 p-md-5 rounded shadow-sm'>
           <h4 className='fw-bold mb-4 text-uppercase'>Shipping details</h4>
           <Form noValidate validated={validated} onSubmit={handleSubmit}>
